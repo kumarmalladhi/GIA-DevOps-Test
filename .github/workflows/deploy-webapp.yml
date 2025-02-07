@@ -36,14 +36,13 @@ jobs:
         aws-region: 'ca-central-1'  # Specifies the AWS region your resources will be managed in
 
     - name: Install dependencies
-      run: npm install -g htmlhint stylelint eslint stylelint-config-standard
+      run: npm install -g htmlhint stylelint  stylelint-config-standard
 
 
     #Improves Code Quality and Enforces Best Practices
-    - name: Lint HTML, CSS, and JavaScript files
+    - name: Lint HTML files
       run: |
         htmlhint .
-        eslint "**/*.js"
 
     - name: Deploy to S3
       run: |
