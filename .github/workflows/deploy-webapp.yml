@@ -48,3 +48,14 @@ jobs:
       run: |
         # Syncs files to the S3 bucket, only including HTML, CSS, and JS files
         aws s3 sync . s3://sampocweb --exclude "*" --include "*.html" --include "*.css" --include "*.js"
+    #  Send Slack notification on success
+    - name: Notify Slack (Success)
+      if: success()
+      run: |
+        curl -X POST -H 'Content-type: application/json' --data '{"text":" *Deployment Successful!* Your web app has been deployed successfully to S3."}' ${{ secrets.SLACK_WEBHOOK_URL }}
+
+    #  Send Slack notification on failure
+    - name: Notify Slack (Failure)
+      if: failure()
+      run: |
+        curl -X POST -H 'Content-type: application/json' --data '{"text":" *Deployment Failed!* There was an issue with the deployment. Check GitHub Actions logs."}' ${{ secrets.SLACK_WEBHOOK_URL }}
