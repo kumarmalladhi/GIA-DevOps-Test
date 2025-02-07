@@ -1,0 +1,40 @@
+# Name of the workflow
+name: Deploy Web Application to AWS S3
+
+# Specifies the GitHub events that trigger the workflow
+on:
+  push:
+  # Triggers on push to the main branch
+    branches:
+      - main
+      - webdeploy
+    paths:
+      - 'index.html'  # Triggers if changes are made to index.html
+      - 'style.css'   # Triggers if changes are made to style.css
+      - 'script.js'   # Triggers if changes are made to script.js
+
+# Defines a job named 'deploy' that runs on an Ubuntu latest environment
+jobs:
+  deploy:
+    runs-on: ubuntu-latest # The type of virtual host environment to use
+
+    env:
+      S3_BUCKET_NAME: "sampocweb"  # Set your S3 bucket name here
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2 # Checks out the repository content into the GitHub Actions runner
+      
+      # Setup AWS CLI for deploying to AWS S3
+    - name: Set up AWS CLI
+      uses: aws-actions/configure-aws-credentials@v1 # Uses an official GitHub Action to configure AWS credentials
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}  # Fetches your AWS Access Key from GitHub Secrets
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}  # Fetches your AWS Secret Access Key from GitHub Secrets
+        aws-region: 'ca-central-1'  # Specifies the AWS region your resources will be managed in
+
+    - name: Deploy to S3
+      run: |
+        # Syncs files to the S3 bucket, only including HTML, CSS, and JS files
+        aws s3 sync . s3://$S3_BUCKET_NAME --exclude "*" --include "*.html" --include "*.css" --include "*.js" --acl public-read
+        # The --acl public-read option makes these files publicly accessible
