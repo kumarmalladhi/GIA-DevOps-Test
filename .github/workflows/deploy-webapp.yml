@@ -35,10 +35,14 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}  # Fetches your AWS Secret Access Key from GitHub Secrets
         aws-region: 'ca-central-1'  # Specifies the AWS region your resources will be managed in
 
-##Improves Code Quality and Enforces Best Practices
+    - name: Install dependencies
+      run: npm install -g htmlhint stylelint eslint stylelint-config-standard
+
+    - name: Run Stylelint
+      run: stylelint "**/*.css"
+    #Improves Code Quality and Enforces Best Practices
     - name: Lint HTML, CSS, and JavaScript files
       run: |
-        npm install -g htmlhint stylelint eslint
         htmlhint .
         stylelint "**/*.css"
         eslint "**/*.js"
