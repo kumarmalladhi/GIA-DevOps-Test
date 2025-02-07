@@ -7,6 +7,7 @@ on:
   # Triggers on push to the main branch
     branches:
       - main
+      #Added webdeploy for testting
       - webdeploy
     paths:
       - 'index.html'  # Triggers if changes are made to index.html
@@ -32,6 +33,14 @@ jobs:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}  # Fetches your AWS Access Key from GitHub Secrets
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}  # Fetches your AWS Secret Access Key from GitHub Secrets
         aws-region: 'ca-central-1'  # Specifies the AWS region your resources will be managed in
+
+##Improves Code Quality and Enforces Best Practices
+    - name: Lint HTML, CSS, and JavaScript files
+      run: |
+        npm install -g htmlhint stylelint eslint
+        htmlhint .
+        stylelint "**/*.css"
+        eslint "**/*.js"
 
     - name: Deploy to S3
       run: |
