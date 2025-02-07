@@ -1,9 +1,9 @@
-# ✅ Provider Configuration
+#  Provider Configuration
 provider "aws" {
   region = var.aws_region
 }
 
-# ✅ Create an S3 bucket for hosting the static website
+#  Create an S3 bucket for hosting the static website
 resource "aws_s3_bucket" "web_app_bucket" {
   bucket = var.bucket_name
 
@@ -15,7 +15,7 @@ resource "aws_s3_bucket" "web_app_bucket" {
   }
 }
 
-# ✅ Configure the S3 bucket for static website hosting
+#  Configure the S3 bucket for static website hosting
 resource "aws_s3_bucket_website_configuration" "web_app_bucket_website" {
   bucket = aws_s3_bucket.web_app_bucket.bucket
 
@@ -28,7 +28,7 @@ resource "aws_s3_bucket_website_configuration" "web_app_bucket_website" {
   }
 }
 
-# ✅ Block public ACLs but allow public access via a bucket policy
+#  Block public ACLs but allow public access via a bucket policy
 resource "aws_s3_bucket_public_access_block" "web_app_bucket_access" {
   bucket = aws_s3_bucket.web_app_bucket.bucket
 
@@ -38,7 +38,7 @@ resource "aws_s3_bucket_public_access_block" "web_app_bucket_access" {
   restrict_public_buckets = false  # Allows bucket policy to enable public access
 }
 
-# ✅ Add a public bucket policy (since ACLs are disabled)
+#  Add a public bucket policy (since ACLs are disabled)
 resource "aws_s3_bucket_policy" "public_read_policy" {
   bucket = aws_s3_bucket.web_app_bucket.bucket
 
@@ -58,7 +58,7 @@ resource "aws_s3_bucket_policy" "public_read_policy" {
   })
 }
 
-# ✅ Create an IAM user with programmatic access (Used by GitHub Actions)
+#  Create an IAM user with programmatic access (Used by GitHub Actions)
 resource "aws_iam_user" "s3_access_user" {
   name = "${var.project_name}-s3-user"
   tags = {
@@ -68,12 +68,12 @@ resource "aws_iam_user" "s3_access_user" {
   }
 }
 
-# ✅ Create an IAM access key for the user
+#  Create an IAM access key for the user
 resource "aws_iam_access_key" "s3_access_key" {
   user = aws_iam_user.s3_access_user.name
 }
 
-# ✅ Create an IAM policy for S3 access (Used by GitHub Actions)
+#  Create an IAM policy for S3 access (Used by GitHub Actions)
 resource "aws_iam_policy" "s3_access_policy" {
   name        = "${var.project_name}-s3-access-policy"
   description = "Policy to allow access to the S3 bucket for the web application"
@@ -97,7 +97,7 @@ resource "aws_iam_policy" "s3_access_policy" {
   })
 }
 
-# ✅ Attach the IAM policy to the IAM user
+#  Attach the IAM policy to the IAM user
 resource "aws_iam_user_policy_attachment" "s3_access_attachment" {
   user       = aws_iam_user.s3_access_user.name
   policy_arn = aws_iam_policy.s3_access_policy.arn
