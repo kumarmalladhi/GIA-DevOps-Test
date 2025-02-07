@@ -11,7 +11,7 @@ on:
     paths:
       - 'index.html'  # Triggers if changes are made to index.html
       - 'style.css'   # Triggers if changes are made to style.css
-      - 'script.js'   # Triggers if changes are made to script.js
+      - 'script.js'   # Triggers if changes are made to script.js.
 
 # Defines a job named 'deploy' that runs on an Ubuntu latest environment
 jobs:
