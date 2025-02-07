@@ -36,5 +36,4 @@ jobs:
     - name: Deploy to S3
       run: |
         # Syncs files to the S3 bucket, only including HTML, CSS, and JS files
-        aws s3 sync . s3://$S3_BUCKET_NAME --exclude "*" --include "*.html" --include "*.css" --include "*.js" --acl public-read
-        # The --acl public-read option makes these files publicly accessible
+        aws s3 sync . s3://sampocweb --exclude "*" --include "*.html" --include "*.css" --include "*.js"
