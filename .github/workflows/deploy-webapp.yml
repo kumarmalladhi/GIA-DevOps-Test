@@ -9,6 +9,7 @@ on:
       - main
       #Added webdeploy for testting
       - webdeploy
+  workflow_dispatch:  # Allows manual trigger
     paths:
       - 'index.html'  # Triggers if changes are made to index.html
       - 'style.css'   # Triggers if changes are made to style.css
